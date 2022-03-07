@@ -1,0 +1,2 @@
+connection valid
+conn terminated
