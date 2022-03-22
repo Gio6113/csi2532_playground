@@ -4,7 +4,7 @@
 
 
 #### 1. Author and books
-
+```
 CREATE TABLE Author (
 	Authorid int,
 	Authorname varchar (20),
@@ -24,33 +24,39 @@ CREATE TABLE Book (
 	CHECK (amount > 0),
 	CHECK (rating <= 10 AND rating >= 1)
 );
+```
 
 #### 2. Limit on number of books and authors.
 
+```
 CREATE ASSERTION librarylimit
 CHECK ( 
 	(SELECT COUNT(*) FROM Book) + (SELECT COUNT(*) FROM Author) <= 10000
 );
-
+```
 
 #### 3. Trigger
 
+```
 CREATE TRIGGER bookrating
 BEFORE UPDATE ON book
 FOR EACH ROW
 EXECUTE PROCEDURE check_book_rating()
+```
 
 
-
-#### 4.  Lister les name et birthplace de tous les artists nés entre 1880 et 1930. (ASTUCE: EXTRACT(YEAR FROM dateofbirth) vous donne l'année à partir d'un attribut DATE)
+#### 4.  Creer un trigger pour changer le rating total d'un auteur
 
 i)
+```
 ALTER TABLE Author ADD COLUMN author_sum_rating int;
 ALTER TABLE Author ALTER COLUMN  author_sum_rating SET DEFAULT 0;
 UPDATE Author Set author_sum_rating = DEFAULT
-
+```
 
 ii)
+
+```
 CREATE TRIGGER updatesum
 AFTER UPDATE OF rating ON Book
 FOR EACH ROW
@@ -63,3 +69,4 @@ UPDATE Author
 	GROUP BY authorid
 	) rate
 	ON Author.Authorid = rate.authorid
+```
